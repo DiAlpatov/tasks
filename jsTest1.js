@@ -1,90 +1,50 @@
-// 1. Написать рекурсивную функцию возведения в степень. На вход принимать число и его степень, на выходе выдавать рассчитанное значение.
+// 1) Функция. Принимает массив строк. Должна вернуть массив результатов проверки двух строк. 
+// Если у одной строки с последующей первый и последний символы, то true. 
+// Например ["asd", "afffd", "cc", "kk"]. Для такого массива функция должна вернуть [true, false, false]
 
-let number = +prompt("Enter your number", 0);
-// let degree = +prompt("Enter degree", 0);
+// let arrayString = ["asd", "afffd", "cc", "kk"]
 
-// let getNumber = (num,deg) => {
-//   if(deg == 1){
-//     return num;
-//   } else {
-//     return num*getNumber(num, deg-1);
-//   }
-// }
-
-// let showResult = getNumber(number, degree);
-// console.log(showResult);
-
-
-
-//2. Написать приложение, получающее массив с вложенными массивами и возвращающее его “плоскую” версию. 
-// Встроенный метод массивов flat использовать нельзя.
-// Например: [1, 2, [3, 4, [5, 6, [7, 8, [9, 10]]]]] => [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-
-// let oldArray = [1, 2, [3, 4, [5, 6, [7, 8, [9, 10]]]]];
-
-// let combineArray = (arr) => {
-//   let newArray = []
-//   for(let value of arr){
-//     if(typeof value == 'object'){
-//       newArray.push(...combineArray(value))
+// let checkString = (arr) => {
+//   let boollArray = []
+//   for (let i = 0; i < arr.length - 1; i++) {
+//     if (arr[i][0] === arr[i + 1][0] && arr[i][arr[i].length - 1] === arr[i + 1][arr[i + 1].length - 1]) {
+//       boollArray.push(true)
 //     } else {
-//       newArray.push(value)
+//       boollArray.push(false)
 //     }
 //   }
-//   return newArray;
+//   return boollArray
 // }
 
-// let showResult = combineArray(oldArray);
+// let showResult = checkString(arrayString);
 // console.log(showResult);
 
 
 
-//3.
+//2Дана матрица [[1, 2, 3, 2, 3, 7, 9], [4, 5, 6, 5, 7, 8, 9], [7, 8, 9, 4, 6, 3, 1]](Это к примеру. 
+//Точную не помню). дальше берется матрица 3х3 и идет по этой матрице сдвигаясь на один столбец на каждой итерации. 
+//Функция должна вернуть массив булевых значений. Если в матрице 3х3 цифры не повторяются, то true.
 
-let num = +prompt("vvedite")
+let matrix = [[1, 2, 3, 2, 3, 7, 9], 
+              [4, 5, 6, 5, 7, 8, 9], 
+              [7, 8, 9, 4, 6, 3, 1]];
 
-function numLetters(num, d) {
-  k = num.toString();
-  let i = ''
-  let arr1 = [
-    ['', 'тысяч'],
-    ['a', 'и', ''],
-    ['', 'a', 'ов']
-  ];
-
-  k = k.split(/(?=(?:\d{3})+$)/); // дробим число на на подмассивы = 3
-
-  if (k[0].length == 1) {
-    k[0] = '00' + k[0];
-
-  }
-  if (k[0].length == 2) {
-    k[0] = '0' + k[0];
-  }
-  for (let j = (k.length - 1); j >= 0; j--) { // соединяем дробленые числа в одно с названием прописью и окончание(decOfNum)
-
-    if (k[j] != '000') {
-
-      i = (((d && j == (k.length - 1)) || j == (k.length - 2)) && (k[j][2] == '1' || k[j][2] == '2') ? t(k[j], 1) : t(k[j])) + declOfNum(k[j], arr1[0][k.length - 1 - j], (j == (k.length - 2) ? arr1[1] : arr1[2])) + i;
+let func = (m) => {
+  let boolArr = []
+ mark: for (i = 0; i < m[0].length; i++) {
+    let arr = [];
+    for (let j = 0; j < 3; j++) {
+      for (let k = i, a = 0; a < 3; a++, k++) {
+        if (arr.includes(m[j][k])){
+          boolArr.push(false)
+          continue mark;
+        }
+        arr.push(m[j][k]);
+      } 
     }
+    boolArr.push(true)
+    console.log(m[i][j]);
   }
-
-  function t(k, d) {  //k=num
-    let arr2 = [
-      ['', ' один', ' два', ' три', ' четыре', ' пять', ' шесть', ' семь', ' восемь', ' девять'],
-      [' десять', ' одиннадцать', ' двенадцать', ' тринадцать', ' четырнадцать', ' пятнадцать', ' шестнадцать', ' семнадцать', ' восемнадцать', ' девятнадцать'],
-      ['', '', ' двадцать', ' тридцать', ' сорок', ' пятьдесят', ' шестьдесят', ' семьдесят', ' восемьдесят', ' девяносто'],
-      ['', ' сто', ' двести', ' триста', ' четыреста', ' пятьсот', ' шестьсот', ' семьсот', ' восемьсот', ' девятьсот'],
-      ['', ' одна', ' две']
-    ];
-    return arr2[3][k[0]] + (k[1] == 1 ? arr2[1][k[2]] : arr2[2][k[1]] + (d ? arr2[4][k[2]] : arr2[0][k[2]]));   //  сто + двацать или 21  d+  два или две
-  }
-  return i;
+  return boolArr
 }
-
-function declOfNum(n, t, arr1) {
-  let k = [2, 0, 1, 1, 1, 2, 2, 2, 2, 2];
-
-  return (t == '' ? '' : ' ' + t + (n[n.length - 2] == "1" ? arr1[2] : arr1[k[n[n.length - 1]]]));
-
-} console.log(numLetters(num));
+console.log(func(matrix))
